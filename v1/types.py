@@ -131,7 +131,7 @@ class EventSource(object):
 
 class Event(object):
     jsonMap = {
-          'TypeMeta':           'action=inline,type=TypeMeta',
+          'TypeMeta':           'action=inline,type=TypeMeta,name=.',
           'ObjectMeta':         'name=metadata,type=ObjectMeta',
           'InvolvedObject':     'name=involvedObject,type=ObjectReference,',
           'Reason':             'name=reason,type=str,omitempty',
