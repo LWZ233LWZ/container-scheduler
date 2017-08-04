@@ -66,94 +66,94 @@ class OwnerReference(object):
 
 class ObjectMeta(object):
     jsonMap = {
-        'Name':                 'name=name,type=str,omitempty',
-        'GenerateName':         'name=generateName,type=str,omitempty',
-        'Namespace':            'name=namespace,type=str,omitempty',
-        'SelfLink' :            'name=selfLink,type=str,omitempty',
-        'UID':                  'name=selfLine,type=str,omitempty',
-        'ResourceVersion':      'name=resourceVersion,type=str,omitempty',
-        'Generation':           'name=generation,type=int,omitempty',
-        'CreationTimestamp':    'name=creationTimestamp,type=v1.Time,omitempty',
-        'DeletionTimestamp':    'name=deletionTimestamp,type=v1.Time,omitempty',
-        'DeletionGracePeriodSeconds': 'name=deletionGracePeriodSeconds,type=int,omitempty',
-        'Labels':               'name=labels,type=dict,omitempty',
-        'Annotations':          'name=annotations,type=list[str],omitempty',
-        'OwnerReferences':      'name=ownerReferences,type=list[v1.OwnerReference],emitempty',
-        'Finalizers':           'name=finalizers,type=list[str],emitempty',
-        'ClusterName':          'name=clusterName,type=str,emitempty'
+        'name':                 'name=name,type=str,omitempty',
+        'generateName':         'name=generateName,type=str,omitempty',
+        'namespace':            'name=namespace,type=str,omitempty',
+        'selfLink' :            'name=selfLink,type=str,omitempty',
+        'uid':                  'name=uid,type=str,omitempty',
+        'resourceVersion':      'name=resourceVersion,type=str,omitempty',
+        'generation':           'name=generation,type=int,omitempty',
+        'creationTimestamp':    'name=creationTimestamp,type=v1.Time,omitempty',
+        'deletionTimestamp':    'name=deletionTimestamp,type=v1.Time,omitempty',
+        'deletionGracePeriodSeconds': 'name=deletionGracePeriodSeconds,type=int,omitempty',
+        'labels':               'name=labels,type=dict,omitempty',
+        'annotations':          'name=annotations,type=list[str],omitempty',
+        'ownerReferences':      'name=ownerReferences,type=list[v1.OwnerReference],emitempty',
+        'finalizers':           'name=finalizers,type=list[str],emitempty',
+        'clusterName':          'name=clusterName,type=str,emitempty'
     }
 
     def __init__(self):
-        self.Name = None
-        self.GenerateName = None
-        self.Namespace = None
-        self.SelfLine = None
-        self.UID = None
-        self.ResourceVersion = None
-        self.Generation = None
-        self.CreationTimestamp = None
-        self.DeletionTimestamp = None
-        self.DeletionGracePeriodSeconds = None
-        self.Labels = None
-        self.Annotations = None
-        self.OwnerReferences = None
-        self.Finalizers = None
-        self.ClusterName = None
+        self.name = None
+        self.generateName = None
+        self.namespace = None
+        self.selfLine = None
+        self.uid = None
+        self.resourceVersion = None
+        self.generation = None
+        self.creationTimestamp = None
+        self.deletionTimestamp = None
+        self.deletionGracePeriodSeconds = None
+        self.labels = None
+        self.annotations = None
+        self.ownerReferences = None
+        self.finalizers = None
+        self.clusterName = None
 
 class ObjectReference(object):
     jsonMap = {
-        'Kind':             'name=kind,type=str,omitempty',
-        'Namespace':        'name=namespace,type=str,omitempty',
-        'Name':             'name=name,type=str,omitempty',
-        'UID':              'name=uid,type=str,omitempty',
-        'APIVersion':       'name=apiVersion,type=str,omitempty',
-        'ResourceVersion':  'name=resourceVersion,type=str,omitempty',
-        'FieldPath':        'name=fieldPath,type=str,omitempty',
+        'kind':             'name=kind,type=str,omitempty',
+        'namespace':        'name=namespace,type=str,omitempty',
+        'name':             'name=name,type=str,omitempty',
+        'uid':              'name=uid,type=str,omitempty',
+        'apiVersion':       'name=apiVersion,type=str,omitempty',
+        'resourceVersion':  'name=resourceVersion,type=str,omitempty',
+        'fieldPath':        'name=fieldPath,type=str,omitempty',
     }
     def __init__(self):
-        self.Kind = None
-        self.Namespace = None
-        self.Name = None
-        self.UID = None
-        self.APIVersion = None
-        self.ResourceVersion = None
-        self.FieldPath = None
+        self.kind = None
+        self.namespace = None
+        self.name = None
+        self.uid = None
+        self.apiVersion = None
+        self.resourceVersion = None
+        self.fieldPath = None
 
 class EventSource(object):
     jsonMap = {
-        'Component':            'name=component,type=str,omitempty',
-        'Host':                 'name=host,type=str,omitempty',
+        'component':            'name=component,type=str,omitempty',
+        'host':                 'name=host,type=str,omitempty',
     }
 
     def __init__(self):
-        self.Component = None
-        self.Host = None
+        self.component = None
+        self.host = None
 
 class Event(object):
     jsonMap = {
           'TypeMeta':           'action=inline,type=v1.TypeMeta,name=.',
-          'ObjectMeta':         'name=metadata,type=v1.ObjectMeta',
-          'InvolvedObject':     'name=involvedObject,type=v1.ObjectReference',
-          'Reason':             'name=reason,type=str,omitempty',
-          'Message':            'name=message,type=str,omitempty',
-          'Source':             'name=source,type=v1.EventSource,omitempty',
-          'FirstTimestamp':     'name=firstTimestamp,type=v1.Time,omitempty',
-          'LastTimestamp':      'name=lastTimestamp,type=v1.Time,omitempty',
-          'Count':              'name=count,type=int,omitempty',
-          'Type':               'name=type,type=str,omitempty',
+          'objectMeta':         'name=metadata,type=v1.ObjectMeta',
+          'involvedObject':     'name=involvedObject,type=v1.ObjectReference',
+          'reason':             'name=reason,type=str,omitempty',
+          'message':            'name=message,type=str,omitempty',
+          'source':             'name=source,type=v1.EventSource,omitempty',
+          'firstTimestamp':     'name=firstTimestamp,type=v1.Time,omitempty',
+          'lastTimestamp':      'name=lastTimestamp,type=v1.Time,omitempty',
+          'count':              'name=count,type=int,omitempty',
+          'type':               'name=type,type=str,omitempty',
     }
 
     def __init__(self):
         self.TypeMeta = None
-        self.ObjectMeta = None
-        self.InvolvedObject = None
-        self.Reason = None
-        self.Message = None
-        self.Source = None
-        self.FirstTimestamp = None
-        self.LastTimestamp = None
-        self.Count = None
-        self.Type = None
+        self.objectMeta = None
+        self.involvedObject = None
+        self.reason = None
+        self.message = None
+        self.source = None
+        self.firstTimestamp = None
+        self.lastTimestamp = None
+        self.count = None
+        self.type = None
 
 class Duration(object):
     def __init__(self):
