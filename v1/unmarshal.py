@@ -1,31 +1,103 @@
 import json
+import re
 import v1.types as v1
 
 classObj= {
-    'v1/Event': lambda dict: construct_V1_Event(dict),
-    'v1/TypeMeta': lambda  dict: construct_V1_TypeMeta(dict),
-    'v1/ObjectMeta': lambda  dict: construct_V1_ObjectMeta(dict),
-    'v1/ObjectReference': lambda dict: construct_V1_ObjectReference(dict),
-    'v1/EventSource': lambda dict: construct_V1_EventSource(dict),
+    'v1.Event': lambda dict: construct_V1_Event(dict),
+    'v1.TypeMeta': lambda  dict: construct_V1_TypeMeta(dict),
+    'v1.ObjectMeta': lambda  dict: construct_V1_ObjectMeta(dict),
+    'v1.ObjectReference': lambda dict: construct_V1_ObjectReference(dict),
+    'v1.EventSource': lambda dict: construct_V1_EventSource(dict),
+    'str': lambda i: str(i),
+    'bool': lambda i: bool(i),
+    'v1.Time': lambda i: v1.Time(i),
+    'list': lambda list,ty : filter(lambda x: classObj[ty](x) , list),
 }
 
 def construct_V1_EventSource(dict):
-    pass
+    e = v1.ObjectReference()
+    jsonMap = e.jsonMap
+    for outerName, rawValue in jsonMap:
+        marks = parseTag(rawValue)
+        if marks == None:
+            return None, 'Tag Error: please Check'
+        for name, value in marks:
+            if name == '.':
+                setattr(e, outerName, classObj['v1.' + outerName](dict))
+            else:
+                if 'list' in value:
+                    listtype = value[5:len(value) - 1]
+                    setattr(e, outerName, classObj['list'](dict, listtype))
+                else:
+                    setattr(e, outerName, classObj[value](dict))
 
 def construct_V1_ObjectReference(dict):
-    pass
+    e = v1.ObjectReference()
+    jsonMap = e.jsonMap
+    for outerName, rawValue in jsonMap:
+        marks = parseTag(rawValue)
+        if marks == None:
+            return None, 'Tag Error: please Check'
+        for name, value in marks:
+            if name == '.':
+                setattr(e, outerName, classObj['v1.' + outerName](dict))
+            else:
+                if 'list' in value:
+                    listtype = value[5:len(value) - 1]
+                    setattr(e, outerName, classObj['list'](dict, listtype))
+                else:
+                    setattr(e, outerName, classObj[value](dict))
+
 def construct_V1_ObjectMeta(dict):
-    pass
+    e = v1.ObjectMeta()
+    jsonMap = e.jsonMap
+    for outerName, rawValue in jsonMap:
+        marks = parseTag(rawValue)
+        if marks == None:
+            return None, 'Tag Error: please Check'
+        for name, value in marks:
+            if name == '.':
+                setattr(e, outerName, classObj['v1.' + outerName](dict))
+            else:
+                if 'list' in value:
+                    listtype = value[5:len(value) - 1]
+                    setattr(e, outerName, classObj['list'](dict, listtype))
+                else:
+                    setattr(e, outerName, classObj[value](dict))
+
 def construct_V1_TypeMeta(dict):
-    pass
+    e = v1.TypeMeta()
+    jsonMap = e.jsonMap
+    for outerName, rawValue in jsonMap:
+        marks = parseTag(rawValue)
+        if marks == None:
+            return None, 'Tag Error: please Check'
+        for name,value in marks:
+            if name == '.':
+                setattr(e, outerName, classObj['v1.'+outerName](dict))
+            else:
+                if 'list' in value:
+                    listtype = value[5:len(value)-1]
+                    setattr(e,outerName,classObj['list'](dict,listtype))
+                else:
+                    setattr(e,outerName, classObj[value](dict))
 
 def construct_V1_Event(dict):
     e = v1.Event()
     jsonMap = e.jsonMap
-    for k,v in jsonMap:
-        marks = parseTag(v)
+    for outerName,rawValue in jsonMap:
+        marks = parseTag(rawValue)
         if marks == None:
             return None, 'Tag Error: please Check'
+        for name,value in marks:
+            if name == '.':
+                setattr(e, outerName, classObj['v1.'+outerName](dict))
+            else:
+                if 'list' in value:
+                    listtype = value[5:len(value) - 1]
+                    setattr(e, outerName, classObj['list'](dict, listtype))
+                else:
+                    setattr(e, outerName, classObj[value](dict))
 
 def genDataMemberByTag():
     pass
