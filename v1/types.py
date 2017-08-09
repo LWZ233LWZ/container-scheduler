@@ -38,31 +38,31 @@ class Time(object):
 
 class TypeMeta(object):
     jsonMap = {
-       'Kind' :             'name=kind,type=str,omitempty',
-       'APIVersion':        'name=apiVersion,type=str,omitempty',
+       'kind' :             'name=kind,type=str,omitempty',
+       'apiVersion':        'name=apiVersion,type=str,omitempty',
     }
     def __init__(self):
-        self.Kind = None
-        self.APIVersion = None
+        self.kind = None
+        self.apiVersion = None
 
 class OwnerReference(object):
     jsonMap = {
-       'APIVersion':            'name=apiVersion,type=str',
-       'Kind' :                 'name=kind,type=str',
-       'Name':                  'name=name,type=str',
-       'UID':                   'name=uid,type=str',
-       'Controller':            'name=controller,type=bool',
-       'BlockOwnerDeletion':    'name=blockOwnerDeletion,type=bool',
+       'apiVersion':            'name=apiVersion,type=str',
+       'kind' :                 'name=kind,type=str',
+       'name':                  'name=name,type=str',
+       'uis':                   'name=uid,type=str',
+       'controller':            'name=controller,type=bool',
+       'blockOwnerDeletion':    'name=blockOwnerDeletion,type=bool',
     }
     def __call__(self, *args, **kwargs):
         pass
     def __init__(self):
-        self.APIVersion = None
-        self.Kind = None
-        self.Name = None
-        self.UID = None
-        self.Controller = None
-        self.BlockOwnerDeletion = None
+        self.apiVersion = None
+        self.kind = None
+        self.name = None
+        self.uid = None
+        self.controller = None
+        self.blockOwnerDeletion = None
 
 class ObjectMeta(object):
     jsonMap = {
@@ -131,7 +131,7 @@ class EventSource(object):
 
 class Event(object):
     jsonMap = {
-          'TypeMeta':           'action=inline,type=v1.TypeMeta,name=.',
+          'typeMeta':           'action=inline,type=v1.TypeMeta,name=typeMeta',
           'objectMeta':         'name=metadata,type=v1.ObjectMeta',
           'involvedObject':     'name=involvedObject,type=v1.ObjectReference',
           'reason':             'name=reason,type=str,omitempty',
@@ -144,7 +144,7 @@ class Event(object):
     }
 
     def __init__(self):
-        self.TypeMeta = None
+        self.typeMeta = None
         self.objectMeta = None
         self.involvedObject = None
         self.reason = None

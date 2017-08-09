@@ -7,6 +7,7 @@ classObj= {
     'v1.TypeMeta': lambda  dict: construct_V1_TypeMeta(dict),
     'v1.ObjectMeta': lambda  dict: construct_V1_ObjectMeta(dict),
     'v1.ObjectReference': lambda dict: construct_V1_ObjectReference(dict),
+    'v1.OwnerReference' : lambda  dict : construct_V1_OwnerReference(dict),
     'v1.EventSource': lambda dict: construct_V1_EventSource(dict),
     'str': lambda i: str(i),
     'bool': lambda i: bool(i),
@@ -16,99 +17,118 @@ classObj= {
 }
 
 def construct_V1_EventSource(dict):
-    e = v1.ObjectReference()
-    jsonMap = e.jsonMap
-    for (outerName,rawValue) in jsonMap.items():
-        marks = parseTag(rawValue)
-        if marks == None:
-            return None, 'Tag Error: please Check'
-        for (name,value) in marks.items():
-            if name == '.':
-                setattr(e, outerName, classObj['v1.' + outerName](dict))
-            else:
-                if 'list' in value:
-                    listtype = value[5:len(value) - 1]
-                    setattr(e, outerName, classObj['list'](dict, listtype))
-                else:
-                    setattr(e, outerName, classObj[value](dict))
+    e = v1.EventSource()
+    for key in e.jsonMap.keys():
+        if dict.has_key(key):
+            setattr(e, key, dict[key])
+
     return e
 
 def construct_V1_ObjectReference(dict):
     e = v1.ObjectReference()
+    for key in e.jsonMap.keys():
+        if dict.has_key(key):
+            setattr(e, key, dict[key])
+
+    return e
+
+def construct_V1_OwnerReference(dict):
+    e = v1.ObjectReference()
     jsonMap = e.jsonMap
-    for (outerName,rawValue) in jsonMap.items():
+    for (outerName, rawValue) in jsonMap.items():
         marks = parseTag(rawValue)
         if marks == None:
             return None, 'Tag Error: please Check'
-        for (name,value) in marks.items():
-            if name == '.':
-                setattr(e, outerName, classObj['v1.' + outerName](dict))
-            else:
-                if 'list' in value:
-                    listtype = value[5:len(value) - 1]
-                    setattr(e, outerName, classObj['list'](dict, listtype))
-                else:
-                    setattr(e, outerName, classObj[value](dict))
+        types = marks['type']
+        isList = False
+        listType = None
+        if 'list' in types:
+            isList = True
+            listType = types[5:len(types) - 1]
+        names = marks['name']
+        action = None if not marks.has_key('action') else marks['action']
+        if action == 'inline':
+            tmp = classObj[types](dict)
+            setattr(e, names, tmp)
+            continue
+        if isList:
+            tmp = classObj['list'](dict[names], listType)
+            setattr(e, names, tmp)
+            continue
+        if types in classObj.keys() and dict.has_key(names):
+            tmp = classObj[types](dict[names])
+            setattr(e, names, tmp)
+            continue
     return e
 
 def construct_V1_ObjectMeta(dict):
     e = v1.ObjectMeta()
     jsonMap = e.jsonMap
-    for (outerName,rawValue) in jsonMap.items():
+    for (outerName, rawValue) in jsonMap.items():
         marks = parseTag(rawValue)
         if marks == None:
             return None, 'Tag Error: please Check'
-        for (name,value) in marks.items():
-            if name == '.':
-                setattr(e, outerName, classObj['v1.' + outerName](dict))
-            else:
-                if 'list' in value:
-                    listtype = value[5:len(value) - 1]
-                    setattr(e, outerName, classObj['list'](dict, listtype))
-                else:
-                    setattr(e, outerName, classObj[value](dict))
+        types = marks['type']
+        isList = False
+        listType = None
+        if 'list' in types:
+            isList = True
+            listType = types[5:len(types) - 1]
+        names = marks['name']
+        action = None if not marks.has_key('action') else marks['action']
+        if action == 'inline':
+            tmp = classObj[types](dict)
+            setattr(e, names, tmp)
+            continue
+        if isList and dict.has_key(names):
+            tmp = classObj['list'](dict[names], listType)
+            setattr(e, names, tmp)
+            continue
+        if types in classObj.keys() and dict.has_key(names):
+            tmp = classObj[types](dict[names])
+            setattr(e, outerName, tmp)
+            continue
+
     return e
 
 def construct_V1_TypeMeta(dict):
     e = v1.TypeMeta()
-    jsonMap = e.jsonMap
-    for (outerName,rawValue) in jsonMap.items():
-        marks = parseTag(rawValue)
-        if marks == None:
-            return None, 'Tag Error: please Check'
-        for (name,value) in marks.items():
-            if name == '.':
-                setattr(e, outerName, classObj['v1.'+outerName](dict))
-            else:
-                if 'list' in value:
-                    listtype = value[5:len(value)-1]
-                    setattr(e,outerName,classObj['list'](dict,listtype))
-                else:
-                    setattr(e,outerName, classObj[value](dict))
+    for key in e.jsonMap.keys():
+        if dict.has_key(key):
+            setattr(e, key, dict[key])
+
     return e
 
 def construct_V1_Event(dict):
     e = v1.Event()
     jsonMap = e.jsonMap
     for (outerName,rawValue) in jsonMap.items():
-        print rawValue
         marks = parseTag(rawValue)
-        print marks
         if marks == None:
             return None, 'Tag Error: please Check'
-        for (name,value) in marks.items():
-            if name == '.':
-                setattr(e, outerName, classObj['v1.'+outerName](dict[outerName]))
-            else:
-                if 'omitempty' == name:
-                    continue
-                if 'list' in value:
-                    listtype = value[5:len(value) - 1]
-                    setattr(e, outerName, classObj['list'](dict[outerName], listtype))
-                else:
-                    print dict[outerName]
-                    print dict
-                    setattr(e, outerName, classObj[value](dict[outerName]))
+        types = marks['type']
+        isList = False
+        listType = None
+        if 'list' in types:
+            isList = True
+            listType = types[5:len(types)-1]
+        names = marks['name']
+        action = None if not marks.has_key('action') else marks['action']
+        if action == 'inline':
+            tmp = classObj[types](dict)
+            setattr(e, names , tmp )
+            continue
+        if isList:
+            tmp = classObj['list'](dict[names], listType)
+            setattr(e, names, tmp)
+            continue
+        if types in classObj.keys() and dict.has_key(names):
+            tmp = classObj[types](dict[names])
+            setattr(e, outerName, tmp)
+            continue
+
+    print e.message
+    print e.objectMeta.name
     return e
 
 def genDataMemberByTag():
@@ -157,11 +177,9 @@ def unmarshal(obj):
         return None
     if not v1Obj.has_key('apiVersion') and v1Obj.has_key('kind'):
         return None
-    print v1Obj
     apiVersion = v1Obj['apiVersion']
     kind = v1Obj['kind']
     solidObj = classObj[apiVersion + '.' +kind](v1Obj)
-    print solidObj
 
 if __name__ == '__main__':
     v1Obj = {'a':1,'b':2}
